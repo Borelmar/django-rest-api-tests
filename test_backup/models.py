@@ -16,16 +16,16 @@ class Test(models.Model):
 
 
 class Task(models.Model):
-    test = models.ForeignKey(to=Test, on_delete=models.CASCADE, null=True, related_name='tasks')
+    test = models.ForeignKey(to=Test, on_delete=models.DO_NOTHING, null=True)
     text = models.TextField()
     options_count = models.PositiveIntegerField(default=0)
-    correct_ordinal_num = models.PositiveIntegerField(default=0)
+    correct_option = models.ForeignKey(to=Test, on_delete=models.CASCADE, null=True)
 
 
 class TaskOption(models.Model):
     task = models.ForeignKey(to=Task, on_delete=models.CASCADE, related_name='options', null=True)
     text = models.TextField()
-    ordinal_num = models.PositiveIntegerField(default=0)
+    #ordinal_num = models.PositiveIntegerField(default=0)
 
 
 class UserTest(models.Model):

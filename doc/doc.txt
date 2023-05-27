@@ -1,0 +1,380 @@
+
+TREE:
+        [tutor]
+            |
+             \
+            [test]--[results]--[user]
+              |
+              |
+            [task]
+              |
+               \
+            [options]
+        
+
+REQUEST PATHS:
+
+        'tests/[test id]/detail/': Get full test (only for tutors or admins)
+        'tests/[test id]/delete/': Delete full test (only for tutors or admins)
+        'tests/create/': Create test (only for tutors or admins)
+
+        'tests/[test id]/info/': Get test without tasks
+        'tests/[test id]/create_result/': user send a req for save test result - only simple users
+
+        'tests/[user id]/get_user_results/': get a all test results of user id
+        'tests/[test id]/detail_for_user/': get full test without answers (user only)
+        'tests/[result id]/result_detail/': get test result
+
+        'tests/[test id]/statistic/': get statistic of test - only for tutors or admins
+
+REF:
+
+'tests/[test id]/detail/': Get full test (only for tutors or admins)
+EXAMPLE:
+******
+    GET /api/tests/14/detail/
+******
+    HTTP 200 OK
+    Allow: GET, HEAD, OPTIONS
+    Content-Type: application/json
+    Vary: Accept
+
+    {
+        "id": 14,
+        "subject": "russian_language",
+        "name": "Тест по русскому языку",
+        "description": "Тест на знание русского языка",
+        "tasks_count": 2,
+        "owner": 1,
+        "tasks": [
+            {
+                "id": 26,
+                "options": [
+                    {
+                        "id": 85,
+                        "text": "Вариант ответа 1",
+                        "ordinal_num": 1,
+                        "task": 26
+                    },
+                    {
+                        "id": 86,
+                        "text": "Вариант ответа 2",
+                        "ordinal_num": 2,
+                        "task": 26
+                    },
+                    {
+                        "id": 87,
+                        "text": "Вариант ответа 3",
+                        "ordinal_num": 3,
+                        "task": 26
+                    },
+                    {
+                        "id": 88,
+                        "text": "Вариант ответа 4",
+                        "ordinal_num": 4,
+                        "task": 26
+                    }
+                ],
+                "text": "Вопрос 1",
+                "options_count": 4,
+                "correct_ordinal_num": 2,
+                "test": 14
+            },
+            {
+                "id": 27,
+                "options": [
+                    {
+                        "id": 89,
+                        "text": "Вариант ответа A",
+                        "ordinal_num": 1,
+                        "task": 27
+                    },
+                    {
+                        "id": 90,
+                        "text": "Вариант ответа B",
+                        "ordinal_num": 2,
+                        "task": 27
+                    },
+                    {
+                        "id": 91,
+                        "text": "Вариант ответа C",
+                        "ordinal_num": 3,
+                        "task": 27
+                    }
+                ],
+                "text": "Вопрос 2",
+                "options_count": 3,
+                "correct_ordinal_num": 3,
+                "test": 14
+            }
+        ]
+    }
+******
+
+'tests/[test id]/delete/': Delete full test (only for tutors or admins)
+EXAMPLE:
+******
+    DELETE /api/tests/13/delete/
+******
+    HTTP 204 No Content
+    Allow: DELETE, OPTIONS
+    Content-Type: application/json
+    Vary: Accept
+******
+
+'tests/create/': Create test (only for tutors or admins)
+ В поле "correct_ordinal_num" у каждого таска задавать порядковый номер
+ задания ( просто идет проверка что correct_ordinal_num не превышает количества options)
+EXAMPLE:
+******
+    POST /api/tests/create/
+    {
+      "subject": "russian_language",
+      "name": "Тест по русскому языку",
+      "description": "Тест на знание русского языка",
+      "tasks": [
+        {
+          "text": "Вопрос 1",
+          "correct_ordinal_num": 2,
+          "options": [
+            {
+              "text": "Вариант ответа 1"
+            },
+            {
+              "text": "Вариант ответа 2"
+            },
+            {
+              "text": "Вариант ответа 3"
+            },
+            {
+              "text": "Вариант ответа 4"
+            }
+          ]
+        },
+        {
+          "text": "Вопрос 2",
+          "correct_ordinal_num": 3,
+          "options": [
+            {
+              "text": "Вариант ответа A"
+            },
+            {
+              "text": "Вариант ответа B"
+            },
+            {
+              "text": "Вариант ответа C"
+            }
+          ]
+        }
+      ]
+    }
+******
+    HTTP 201 Created
+    Allow: POST, OPTIONS
+    Content-Type: application/json
+    Vary: Accept
+
+    {
+        "id": 16,
+        "subject": "russian_language",
+        "name": "Тест по русскому языку",
+        "description": "Тест на знание русского языка",
+        "tasks_count": 2,
+        "tasks": [
+            {
+                "id": 30,
+                "options": [
+                    {
+                        "id": 99,
+                        "text": "Вариант ответа 1",
+                        "ordinal_num": 1,
+                        "task": 30
+                    },
+                    {
+                        "id": 100,
+                        "text": "Вариант ответа 2",
+                        "ordinal_num": 2,
+                        "task": 30
+                    },
+                    {
+                        "id": 101,
+                        "text": "Вариант ответа 3",
+                        "ordinal_num": 3,
+                        "task": 30
+                    },
+                    {
+                        "id": 102,
+                        "text": "Вариант ответа 4",
+                        "ordinal_num": 4,
+                        "task": 30
+                    }
+                ],
+                "text": "Вопрос 1",
+                "options_count": 4,
+                "correct_ordinal_num": 2,
+                "test": 16
+            },
+            {
+                "id": 31,
+                "options": [
+                    {
+                        "id": 103,
+                        "text": "Вариант ответа A",
+                        "ordinal_num": 1,
+                        "task": 31
+                    },
+                    {
+                        "id": 104,
+                        "text": "Вариант ответа B",
+                        "ordinal_num": 2,
+                        "task": 31
+                    },
+                    {
+                        "id": 105,
+                        "text": "Вариант ответа C",
+                        "ordinal_num": 3,
+                        "task": 31
+                    }
+                ],
+                "text": "Вопрос 2",
+                "options_count": 3,
+                "correct_ordinal_num": 3,
+                "test": 16
+            }
+        ]
+    }
+******
+
+'tests/[test id]/info/': Get test without tasks
+EXAMPLE:
+******
+    GET /api/tests/14/info/
+******
+    HTTP 200 OK
+    Allow: GET, HEAD, OPTIONS
+    Content-Type: application/json
+    Vary: Accept
+
+    {
+        "id": 14,
+        "subject": "russian_language",
+        "name": "Тест по русскому языку",
+        "description": "Тест на знание русского языка",
+        "tasks_count": 2,
+        "owner": 1
+    }
+******
+
+'tests/[test id]/create_result/': user send a req for save test result - only simple users
+ Запрос в виде ""
+      "task_answers": {
+        "id таска": "ответ который будет сравниваться с correct_ordinal_num",
+      }
+EXAMPLE:
+******
+    POST /api/tests/14/create_result/
+    {
+      "task_answers": {
+        "26": "2",
+        "27": "3"
+      }
+    }
+******
+    HTTP 200 OK
+    Allow: POST, OPTIONS
+    Content-Type: application/json
+    Vary: Accept
+
+    {
+        "status": "success",
+        "user_result_id": 11,
+        "correct_count": 2,
+        "incorrect_count": 0
+    }
+******
+
+'tests/[user id]/get_user_results/': get a all test results of user id
+EXAMPLE:
+******
+    GET /api/tests/1/get_user_results/
+******
+    HTTP 200 OK
+    Allow: GET, HEAD, OPTIONS
+    Content-Type: application/json
+    Vary: Accept
+
+    [
+        {
+            "id": 1,
+            "test_name": "Test 1",
+            "correct_count": 0,
+            "incorrect_count": 0,
+            "user": 1,
+            "test": 14
+        },
+        {
+            "id": 2,
+            "test_name": "Test 1",
+            "correct_count": 0,
+            "incorrect_count": 1,
+            "user": 1,
+            "test": 1
+        },
+    ]
+******
+
+
+'tests/[result id]/result_detail/': get test result
+EXAMPLE:
+******
+    GET /api/tests/11/result_detail/
+******
+    HTTP 200 OK
+    Allow: GET, HEAD, OPTIONS
+    Content-Type: application/json
+    Vary: Accept
+
+    {
+        "id": 11,
+        "test_name": "Test 1337",
+        "correct_count": 2,
+        "incorrect_count": 0,
+        "user": 1,
+        "test": 14
+    }
+******
+
+'tests/[test id]/statistic/': get statistic of test - only for tutors or admins
+EXAMPLE:
+******
+    GET /api/tests/14/statistic/
+******
+    HTTP 200 OK
+    Allow: GET, HEAD, OPTIONS
+    Content-Type: application/json
+    Vary: Accept
+
+    [
+        {
+            "user": 1,
+            "test": 14,
+            "test_name": "Test 1",
+            "correct_count": 0,
+            "incorrect_count": 0
+        },
+        {
+            "user": 1,
+            "test": 14,
+            "test_name": "Test 1337",
+            "correct_count": 0,
+            "incorrect_count": 0
+        },
+        {
+            "user": 1,
+            "test": 14,
+            "test_name": "Test 1338",
+            "correct_count": 0,
+            "incorrect_count": 0
+        }
+    [
+******
